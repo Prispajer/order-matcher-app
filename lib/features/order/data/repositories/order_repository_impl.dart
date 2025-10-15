@@ -8,7 +8,7 @@ class OrderRepositoryImpl implements OrderRepository {
   OrderRepositoryImpl(this.datasource);
 
   @override
-  Future<List<OrderItem>> analyze(
+  Future<List<OrderItem>> analyzeOrder(
     String inputText,
     List<String> productTitles,
   ) {

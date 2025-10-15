@@ -21,7 +21,7 @@ class ProductsScreen extends StatelessWidget {
                 final product = state.products[index];
                 return ListTile(
                   title: Text(product.title),
-                  subtitle: Text('${product.price} zł'),
+                  subtitle: Text('${product.price} PLN'),
                 );
               },
             );

@@ -20,7 +20,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
 
         final productTitles = products.map((p) => p.title).toList();
 
-        final items = await repository.analyze(event.input, productTitles);
+        final items = await repository.analyzeOrder(event.input, productTitles);
 
         emit(OrderSuccess(items, products));
       } catch (e) {

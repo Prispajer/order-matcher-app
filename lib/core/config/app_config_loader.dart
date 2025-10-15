@@ -6,6 +6,9 @@ class AppConfig {
   AppConfig({required this.apiKey});
 
   factory AppConfig.fromMap(Map<String, dynamic> map) {
+    if (!map.containsKey('ai_key')) {
+      return AppConfig(apiKey: '');
+    }
     return AppConfig(apiKey: map['ai_key'] ?? '');
   }
 
@@ -14,8 +17,12 @@ class AppConfig {
 
 class AppConfigLoader {
   static Future<AppConfig> load() async {
-    final raw = await rootBundle.loadString('assets/config/app_config.json');
-    final map = jsonDecode(raw);
-    return AppConfig.fromMap(map);
+    try {
+      final raw = await rootBundle.loadString('assets/config/app_config.json');
+      final map = jsonDecode(raw);
+      return AppConfig.fromMap(map);
+    } catch (e) {
+      return AppConfig(apiKey: '');
+    }
   }
 }
