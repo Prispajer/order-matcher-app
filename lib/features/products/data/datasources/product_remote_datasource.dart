@@ -9,7 +9,7 @@ class ProductRemoteDatasource {
 
   Future<List<ProductModel>> fetchProducts() async {
     final response = await client.get(
-      Uri.parse('https://dummyjson.com/products'),
+      Uri.parse('https://dummyjson.com/products?limit=50'),
     );
 
     if (response.statusCode == 200) {
