@@ -80,7 +80,7 @@ class _OrderScreenState extends State<OrderScreen> {
     if (matchedItems.isEmpty) {
       return const Center(
         child: Text(
-          'Nie udało się dopasować żadnego produktu. Sprawdź poprawność tekstu zamówienia.',
+          'No products could be matched. Please check your order text for accuracy.',
           style: TextStyle(color: Colors.red),
         ),
       );
@@ -88,7 +88,7 @@ class _OrderScreenState extends State<OrderScreen> {
 
     final rows = items.map((item) {
       final match = products.firstWhere(
-        (p) => p.title.toLowerCase() == item.product.toLowerCase(),
+        (p) => p.title.toLowerCase().contains(item.product.toLowerCase()),
         orElse: () => ProductModel(id: -1, title: 'Unmatched', price: 0),
       );
 
@@ -110,14 +110,17 @@ class _OrderScreenState extends State<OrderScreen> {
 
     return Column(
       children: [
-        DataTable(
-          columns: const [
-            DataColumn(label: Text('Product')),
-            DataColumn(label: Text('Quantity')),
-            DataColumn(label: Text('Unit Price')),
-            DataColumn(label: Text('Total')),
-          ],
-          rows: rows,
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: DataTable(
+            columns: const [
+              DataColumn(label: Text('Product')),
+              DataColumn(label: Text('Quantity')),
+              DataColumn(label: Text('Unit Price')),
+              DataColumn(label: Text('Total')),
+            ],
+            rows: rows,
+          ),
         ),
         const SizedBox(height: 12),
         Text(
