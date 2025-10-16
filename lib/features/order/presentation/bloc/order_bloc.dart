@@ -11,21 +11,26 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
   final ProductBloc productBloc;
 
   OrderBloc(this.repository, this.productBloc) : super(OrderInitial()) {
-    on<AnalyzeOrder>((event, emit) async {
-      emit(OrderLoading());
-      try {
-        final List<Product> products = (productBloc.state is ProductLoaded)
-            ? (productBloc.state as ProductLoaded).products
-            : <Product>[];
+    on<AnalyzeOrder>(_onAnalyzeOrder);
+  }
 
-        final productTitles = products.map((p) => p.title).toList();
+  Future<void> _onAnalyzeOrder(
+    AnalyzeOrder event,
+    Emitter<OrderState> emit,
+  ) async {
+    emit(OrderLoading());
+    try {
+      final List<Product> products = (productBloc.state is ProductLoaded)
+          ? (productBloc.state as ProductLoaded).products
+          : <Product>[];
 
-        final items = await repository.analyzeOrder(event.input, productTitles);
+      final productTitles = products.map((p) => p.title).toList();
 
-        emit(OrderSuccess(items, products));
-      } catch (e) {
-        emit(OrderError('Failed to analyze order: ${e.toString()}'));
-      }
-    });
+      final items = await repository.analyzeOrder(event.input, productTitles);
+
+      emit(OrderSuccess(items, products));
+    } catch (e) {
+      emit(OrderError('Failed to analyze order: ${e.toString()}'));
+    }
   }
 }
