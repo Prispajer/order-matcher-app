@@ -22,7 +22,6 @@ void main() async {
     ProductRemoteDatasource(http.Client()),
   );
   final orderRepository = OrderRepositoryImpl(OrderAiDatasource(config.apiKey));
-
   runApp(
     MultiBlocProvider(
       providers: [
@@ -34,7 +33,7 @@ void main() async {
               OrderBloc(orderRepository, context.read<ProductBloc>()),
         ),
       ],
-      child: OrderMatcherApp(),
+      child: const OrderMatcherApp(),
     ),
   );
 }
